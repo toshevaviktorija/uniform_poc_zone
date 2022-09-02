@@ -1,27 +1,26 @@
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
-// LESSON 7 - ACTIVITY 4 - START
 import {
   CanvasClient,
   CANVAS_DRAFT_STATE,
   CANVAS_PUBLISHED_STATE,
 } from "@uniformdev/canvas";
-// LESSON 7 - ACTIVITY 4 - END
 import { Composition, Slot } from "@uniformdev/canvas-react";
 import resolveRenderer from "../lib/resolveRenderer";
 
-// LESSON 7 - ACTIVITY 4 - START
+// LESSON 7 - ACTIVITY 6- START
+import { useLivePreviewNextStaticProps } from "../hooks/useLivePreviewNextStaticProps";
+import getConfig from "next/config";
+// LESSON 7 - ACTIVITY 6 - END
+
 export async function getStaticProps({ preview }) {
-  // LESSON 7 - ACTIVITY 4 - END
   const client = new CanvasClient({
     apiKey: process.env.UNIFORM_API_KEY,
     projectId: process.env.UNIFORM_PROJECT_ID,
   });
   const { composition } = await client.getCompositionBySlug({
     slug: "/",
-    // LESSON 7 - ACTIVITY 4 - START
     state: preview ? CANVAS_DRAFT_STATE : CANVAS_PUBLISHED_STATE,
-    // LESSON 7 - ACTIVITY 4 - END
   });
   return {
     props: {
@@ -30,7 +29,18 @@ export async function getStaticProps({ preview }) {
   };
 }
 
+// LESSON 7 - ACTIVITY 6 - START
+const { publicRuntimeConfig } = getConfig();
+const { uniform } = publicRuntimeConfig;
+// LESSON 7 - ACTIVITY 6 - END
+
 export default function Home({ composition }) {
+  // LESSON 7 - ACTIVITY 6 - START
+  useLivePreviewNextStaticProps({
+    compositionId: composition?._id,
+    projectId: uniform.projectId,
+  });
+  // LESSON 7 - ACTIVITY 6 - END
   return (
     <Composition data={composition} resolveRenderer={resolveRenderer}>
       <div className={styles.container}>
