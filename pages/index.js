@@ -1,16 +1,27 @@
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
-import { CanvasClient } from "@uniformdev/canvas";
+// LESSON 7 - ACTIVITY 4 - START
+import {
+  CanvasClient,
+  CANVAS_DRAFT_STATE,
+  CANVAS_PUBLISHED_STATE,
+} from "@uniformdev/canvas";
+// LESSON 7 - ACTIVITY 4 - END
 import { Composition, Slot } from "@uniformdev/canvas-react";
 import resolveRenderer from "../lib/resolveRenderer";
 
-export async function getStaticProps() {
+// LESSON 7 - ACTIVITY 4 - START
+export async function getStaticProps({ preview }) {
+  // LESSON 7 - ACTIVITY 4 - END
   const client = new CanvasClient({
     apiKey: process.env.UNIFORM_API_KEY,
     projectId: process.env.UNIFORM_PROJECT_ID,
   });
   const { composition } = await client.getCompositionBySlug({
     slug: "/",
+    // LESSON 7 - ACTIVITY 4 - START
+    state: preview ? CANVAS_DRAFT_STATE : CANVAS_PUBLISHED_STATE,
+    // LESSON 7 - ACTIVITY 4 - END
   });
   return {
     props: {
@@ -41,4 +52,3 @@ export default function Home({ composition }) {
     </Composition>
   );
 }
-
