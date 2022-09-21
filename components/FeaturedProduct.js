@@ -3,7 +3,7 @@ import React from "react";
 //Remember to add export to components/index.js
 export const FeaturedProduct = ({ component }) => {
   const { name, description, date } =
-    component?.parameters?.event?.value?.fields ?? {};
+    component?.parameters?.contentfulProduct?.value?.fields ?? {};
   return (
     <div>
       <hr />
